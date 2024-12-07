@@ -25,7 +25,10 @@ import com.ul.vrs.repository.AccountRepository;
 
 @Service
 public class RentalSystemService {
-
+	
+	private final Map<UUID, Booking> issues = new HashMap<>();
+    private final Map<UUID, Booking> feedbacks = new HashMap<>();
+    
     @Autowired
     BookingRepository bookingRepository;
 
@@ -35,7 +38,6 @@ public class RentalSystemService {
     @Autowired
     private VehicleManagerService vehicleManagerService;
 
-    private Map<UUID, Booking> bookings = new HashMap<>();
 
     public Optional<Booking> getBookingById(UUID bookingId) {
         return bookingRepository.findById(bookingId);
@@ -106,5 +108,40 @@ public class RentalSystemService {
 
     public List<Booking> getAllBookings() {
         return bookingRepository.findAll();
+    }
+    
+    // Reports an issue for a specific vehicle.
+    public void reportIssue(UUID vehicleId, Booking issueDescription) {
+        if (isValidInput(vehicleId, issueDescription)) {
+            issues.put(vehicleId, issueDescription);
+            System.out.println("Issue reported for Vehicle ID: " + vehicleId + " | Issue: " + issueDescription);
+        } else {
+            System.err.println("Invalid vehicle ID or issue description.");
+        }
+    }
+
+    // Submits feedback for a specific vehicle.
+    public void submitFeedback(UUID vehicleId, Booking feedback) {
+        if (isValidInput(vehicleId, feedback)) {
+            feedbacks.put(vehicleId, feedback);
+            System.out.println("Feedback submitted for Vehicle ID: " + vehicleId + " | Feedback: " + feedback);
+        } else {
+            System.err.println("Invalid vehicle ID or feedback text.");
+        }
+    }
+
+    // Retrieves all reported issues.
+    public Map<UUID, Booking> getAllReportedIssues() {
+        return new HashMap<>(issues);
+    }
+
+    // Retrieves all feedback submitted.
+    public Map<UUID, Booking> getAllFeedback() {
+        return new HashMap<>(feedbacks);
+    }
+
+    // Helper method to validate inputs.
+    private boolean isValidInput(UUID vehicleId, Booking input) {
+        return vehicleId != null && input != null;
     }
 }

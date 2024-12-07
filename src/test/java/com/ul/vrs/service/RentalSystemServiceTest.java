@@ -224,5 +224,46 @@ public class RentalSystemServiceTest {
 
         assertEquals(expectedCost, car.getRentingCost(rentingDays), "The renting cost calculation should match the expected value");
     }
+    
+    @Test
+    public void testReportIssuesAndSubmitFeedback() {
+        // Arrange
+        UUID invalidVehicleId = null;
+        Booking invalidInput = null;
+        UUID validVehicleId1 = UUID.randomUUID();
+        UUID validVehicleId2 = UUID.randomUUID();
+        UUID validVehicleId3 = UUID.randomUUID();
+        Booking validInput = mock(Booking.class); // Mock the Booking object if it has behavior or state.
+
+        // Act & Assert: Reporting Issues
+        rentalSystemService.reportIssue(validVehicleId1, validInput);
+        rentalSystemService.reportIssue(validVehicleId2, validInput);
+        Map<UUID, Booking> issues = rentalSystemService.getAllReportedIssues();
+
+        rentalSystemService.reportIssue(invalidVehicleId, invalidInput);
+        Map<UUID, Booking> updatedIssues = rentalSystemService.getAllReportedIssues();
+
+        // Validate Issues
+        assertEquals(2, issues.size(), "Issues map should contain entries for valid inputs.");
+        assertEquals(validInput, issues.get(validVehicleId1), "Reported issue should match the input.");
+        assertEquals(validInput, issues.get(validVehicleId2), "Reported issue should match the input.");
+        assertEquals(2, updatedIssues.size(), "Issues map should remain unchanged for invalid inputs.");
+
+        // Act & Assert: Submitting Feedback
+        rentalSystemService.submitFeedback(validVehicleId1, validInput);
+        rentalSystemService.submitFeedback(validVehicleId2, validInput);
+        rentalSystemService.submitFeedback(validVehicleId3, validInput);
+        Map<UUID, Booking> feedbacks = rentalSystemService.getAllFeedback();
+
+        rentalSystemService.submitFeedback(invalidVehicleId, invalidInput);
+        Map<UUID, Booking> updatedFeedbacks = rentalSystemService.getAllFeedback();
+
+        // Validate Feedbacks
+        assertEquals(3, feedbacks.size(), "Feedbacks map should contain entries for valid inputs.");
+        assertEquals(validInput, feedbacks.get(validVehicleId1), "Submitted feedback should match the input.");
+        assertEquals(validInput, feedbacks.get(validVehicleId2), "Submitted feedback should match the input.");
+        assertEquals(validInput, feedbacks.get(validVehicleId3), "Submitted feedback should match the input.");
+        assertEquals(3, updatedFeedbacks.size(), "Feedbacks map should remain unchanged for invalid inputs.");
+    }
 
 }
