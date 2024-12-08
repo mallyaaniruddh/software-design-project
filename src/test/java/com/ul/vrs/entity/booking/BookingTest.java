@@ -3,7 +3,7 @@ package com.ul.vrs.entity.booking;
 import com.ul.vrs.entity.account.Customer;
 import com.ul.vrs.entity.vehicle.Vehicle;
 import com.ul.vrs.entity.Color;
-import com.ul.vrs.entity.booking.decorator.BookingDecorator;
+import com.ul.vrs.entity.booking.decorator.*;
 import com.ul.vrs.entity.vehicle.fuel.PetrolFuel;
 import com.ul.vrs.entity.vehicle.state.AvailableVehicleState;
 
@@ -69,26 +69,20 @@ public class BookingTest {
     }
 
     @Test
-    public void testBookingDecoratorPriceDelegation() {
-        BookingDecorator decoratedBooking = new BookingDecorator(testBooking);
-        assertEquals(testBooking.getPrice(), decoratedBooking.getPrice(), "Decorator should delegate getPrice to the original booking");
-    }
-
-    @Test
     public void testBookingDecoratorCustomerDelegation() {
-        BookingDecorator decoratedBooking = new BookingDecorator(testBooking);
+        BookingDecorator decoratedBooking = new GPSBookingDecorator(testBooking);
         assertEquals(testBooking.getAccount(), decoratedBooking.getAccount(), "Decorator should delegate getCustomer to the original booking");
     }
 
     @Test
     public void testBookingDecoratorVehicleDelegation() {
-        BookingDecorator decoratedBooking = new BookingDecorator(testBooking);
+        BookingDecorator decoratedBooking = new GPSBookingDecorator(testBooking);
         assertEquals(testBooking.getVehicle(), decoratedBooking.getVehicle(), "Decorator should delegate getVehicle to the original booking");
     }
 
     @Test
     public void testBookingDecoratorAuthenticatePayment() {
-        BookingDecorator decoratedBooking = new BookingDecorator(testBooking);
+        BookingDecorator decoratedBooking = new GPSBookingDecorator(testBooking);
         assertFalse(decoratedBooking.getIsAuthenticated(), "Decorator should initially report unauthenticated payment");
         decoratedBooking.setIsAuthenticated(true);
         assertTrue(decoratedBooking.getIsAuthenticated(), "Decorator should delegate payment authentication to the original booking");

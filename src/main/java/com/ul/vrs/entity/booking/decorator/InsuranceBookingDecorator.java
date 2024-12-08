@@ -17,8 +17,7 @@ public class InsuranceBookingDecorator extends BookingDecorator{
         this.decorators.add(Customization.INSURANCE);
     }
 
-    // TODO: Adjust value based on real-life values
     public double getPrice() {
-        return super.getPrice() + 100;
+        return super.getPrice() + super.getNumberOfRentingDays() * 100 ;
     }
 }

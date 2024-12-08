@@ -17,7 +17,6 @@ public class VoucherBookingDecorator  extends BookingDecorator{
         this.decorators.add(Customization.VOUCHER);
     }
 
-    // TODO: Adjust value based on real-life values
     public double getPrice() {
         return super.getPrice() - 10;
     }

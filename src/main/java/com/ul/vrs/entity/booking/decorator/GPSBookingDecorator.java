@@ -17,7 +17,6 @@ public class GPSBookingDecorator extends BookingDecorator {
         this.decorators.add(Customization.GPS);
     }
 
-    // TODO: Adjust value based on real-life values
     public double getPrice() {
         return super.getPrice() + 10;
     }

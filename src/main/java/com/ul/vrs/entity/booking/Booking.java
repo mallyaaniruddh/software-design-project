@@ -45,6 +45,16 @@ public class Booking {
         this.decorators = new ArrayList<>();
     }
 
+    protected Booking(UUID bookingId, Account account, Vehicle vehicle, int numberOfRentingDays, boolean isAuthenticated, List<Customization> decorators, double price) {
+        this.account = account;
+        this.vehicle = vehicle;
+        this.bookingId = bookingId;
+        this.isAuthenticated = isAuthenticated;
+        this.numberOfRentingDays = numberOfRentingDays;
+        this.price = price;
+        this.decorators = decorators;
+    }
+
     public Booking(Account account, Vehicle vehicle, int numberOfRentingDays) {
         this(UUID.randomUUID(), account, vehicle, numberOfRentingDays);
     }
@@ -54,8 +64,8 @@ public class Booking {
         this.vehicle = new Car();
         this.bookingId = UUID.randomUUID();
         this.isAuthenticated = false;
-        this.price = 10;
         this.numberOfRentingDays = 1;
+        this.price = this.vehicle.getRentingCost(numberOfRentingDays);
         this.decorators = new ArrayList<>();
     }
 
